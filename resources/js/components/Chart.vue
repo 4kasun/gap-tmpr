@@ -9,6 +9,8 @@
     <div>
       <button @click="updateChart">Update!</button>
     </div>
+    <pre>{{ chartOptions | pretty }}</pre>
+    <pre>{{ series | pretty }}</pre>
   </div>
 </template>
 
@@ -24,28 +26,62 @@ export default {
     return {
       chartOptions: {
         chart: {
-          id: "mixpanel-data",
+          type: "area",
+          stacked: false,
+          height: 350,
+          zoom: {
+            type: "x",
+            enabled: true,
+            autoScaleYaxis: true,
+          },
+          toolbar: {
+            autoSelected: "zoom",
+          },
         },
         xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+          categories: [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+          ],
+          title: {
+            text: "Month",
+          },
+        },
+        yaxis: {
+          min: 0,
+          max: 100,
         },
       },
-      series: [
-        {
-          name: "series-1",
-          data: [30, 40, 45, 50, 49, 60, 70, 81],
-        },
-      ],
+      series: [],
     };
+  },
+  created: function () {
+    // `this` points to the vm instance
+    this.updateChart();
   },
   methods: {
     updateChart() {
       axios
         .get(`/chart-data-week`)
         .then((data) => {
-          console.log(data.data.data);
+          console.log("response", data.data.data);
           let response = data.data.data;
           this.series = response[0];
+          console.log("series", this.series);
+          console.log("categories", response[1]);
           this.chartOptions.xaxis.categories = response[1];
         })
         .catch((error) => {

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+
 class HomeController extends Controller
 {
     /**
@@ -24,7 +26,8 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function getWeekChartData() {
+    public function getWeekChartData()
+    {
         $file = fopen(storage_path() . '/export.csv', "r");
         $data = array();
 
@@ -38,23 +41,33 @@ class HomeController extends Controller
 
         $grouped = $collection->groupBy('1');
 
-        $i=0;
+        $grouped = $collection->groupBy(function ($date) {
+            return Carbon::parse($date[1])->format('W'); // grouping by months
+        });
+
+        // $grouped = $collection->groupBy('1');
+
+        // print_r($grouped->toArray());die;
+
+        $i = 0;
+
         foreach ($grouped->toArray() as $date => $values) {
-            $categories[] = $date;
-            $series[$i]['name'] = $date;
-            $series[$i]['data'] = array_column($values, '2');
-            if($i>2) continue;
+            $categories[] = (string) $date;
+            $series[$i]['name'] = (string) $date;
+            $value = array_map(
+                function ($values) {
+                    return (int) $values[2];
+                }, $values);
+            rsort($value);
+            $series[$i]['data'] = array_values(array_unique($value));
+
             $i++;
         }
 
         return response()->json([
             'data' => [$series, $categories],
-            'status'  => 'success',
+            'status' => 'success',
             'message' => 'Payment method not updated',
         ], 200);
-
-        // dd($series);
-
-        // dd($data);
     }
 }

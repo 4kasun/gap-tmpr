@@ -13,8 +13,6 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    {{ __('You are logged in!') }}
                     <chart :chartdata="chartData" :options="chartOptions"></chart>
                 </div>
             </div>
