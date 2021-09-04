@@ -1883,11 +1883,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Chart",
@@ -1919,6 +1914,13 @@ __webpack_require__.r(__webpack_exports__);
         },
         xaxis: {
           categories: [],
+          labels: {
+            formatter: function formatter(value) {
+              return value + " weeks later";
+            }
+          }
+        },
+        legend: {
           labels: {
             formatter: function formatter(value) {
               return value + " weeks later";
@@ -38222,15 +38224,7 @@ var render = function() {
           options: _vm.chartOptions,
           series: _vm.series
         }
-      }),
-      _vm._v(" "),
-      _c("div", [
-        _c("button", { on: { click: _vm.updateChart } }, [_vm._v("Update!")])
-      ]),
-      _vm._v(" "),
-      _c("pre", [_vm._v(_vm._s(_vm._f("pretty")(_vm.chartOptions)))]),
-      _vm._v(" "),
-      _c("pre", [_vm._v(_vm._s(_vm._f("pretty")(_vm.series)))])
+      })
     ],
     1
   )

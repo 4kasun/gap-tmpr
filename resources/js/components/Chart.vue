@@ -6,11 +6,6 @@
       :options="chartOptions"
       :series="series"
     ></apexcharts>
-    <div>
-      <button @click="updateChart">Update!</button>
-    </div>
-    <pre>{{ chartOptions | pretty }}</pre>
-    <pre>{{ series | pretty }}</pre>
   </div>
 </template>
 
@@ -47,6 +42,13 @@ export default {
         },
         xaxis: {
           categories: [],
+          labels: {
+            formatter: function (value) {
+              return value + " weeks later";
+            },
+          },
+        },
+        legend: {
           labels: {
             formatter: function (value) {
               return value + " weeks later";

@@ -33,7 +33,7 @@ npm install  # To install vue js packages
 
 ## How to Run project
 
-To run the project you should run followin g two command in seperate terminal for get dev environment
+To run the project you should run following two command in seperate terminal for get dev environment
 
 ```
 php artisan serve
