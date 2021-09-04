@@ -26,31 +26,51 @@ class HomeController extends Controller
         return view('home');
     }
 
+    /**
+     * This method use for get weekly data from csv file
+     *
+     *
+     * @return json
+     */
     public function getWeekChartData()
     {
+        // read csv file direcly
+        // If we can use database we can upload those data and retrive data via any service layer ( just like design pattern)
         $file = fopen(storage_path() . '/export.csv', "r");
         $data = array();
 
+        // push csv data to array
         while (!feof($file)) {
             $data[] = fgetcsv($file, null, ';');
         }
 
         fclose($file);
+        // remove 1st element from arraya. because of csv titles
+
         array_shift($data);
+        // added data set to collection for manipulations
         $collection = collect($data);
 
-        $grouped = $collection->groupBy('1');
+        /**
+         * collection column map
+         * [
+         *     0 => user_id,
+         *     1 => created_at,
+         *     2 =>	onboarding_perentage,
+         *     3 =>	count_applications,	count_accepted_applications
+         * ]
+         *  */
 
-        $grouped = $collection->groupBy(function ($date) {
-            return Carbon::parse($date[1])->format('W'); // grouping by months
-        });
-
+         // group by created date
         // $grouped = $collection->groupBy('1');
 
-        // print_r($grouped->toArray());die;
+        // grpup by week
+        $grouped = $collection->groupBy(function ($date) {
+            return Carbon::parse($date[1])->format('W');
+        });
 
         $i = 0;
-
+        // preparing chart data object by filterd collection
         foreach ($grouped->toArray() as $date => $values) {
             $categories[] = (string) $date;
             $series[$i]['name'] = (string) $date;

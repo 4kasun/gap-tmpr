@@ -1901,6 +1901,9 @@ __webpack_require__.r(__webpack_exports__);
           type: "area",
           stacked: false,
           height: 350,
+          stroke: {
+            curve: "smooth"
+          },
           zoom: {
             type: "x",
             enabled: true,
@@ -1910,10 +1913,16 @@ __webpack_require__.r(__webpack_exports__);
             autoSelected: "zoom"
           }
         },
+        title: {
+          text: "WEEKLY RETENTION CURVES - MIXPANEL DATA",
+          align: "left"
+        },
         xaxis: {
-          categories: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"],
-          title: {
-            text: "Month"
+          categories: [],
+          labels: {
+            formatter: function formatter(value) {
+              return value + " weeks later";
+            }
           }
         },
         yaxis: {
